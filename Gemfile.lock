@@ -201,6 +201,8 @@ GEM
       rubocop-capybara (~> 2.17)
     ruby-progressbar (1.13.0)
     spring (4.1.1)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     sqlite3 (1.6.2-arm64-darwin)
     thor (1.2.1)
     timeout (0.3.2)
@@ -227,6 +229,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   spring
+  spring-commands-rspec
   sqlite3 (~> 1.4)
   tzinfo-data
 
