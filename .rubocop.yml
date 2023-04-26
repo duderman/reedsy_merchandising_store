@@ -12,7 +12,10 @@ Style/Documentation:
   Enabled: false
 
 RSpec/MultipleExpectations:
-  Max: 5
+  Max: 10
 
 Lint/MissingSuper:
   Enabled: false
+
+RSpec/ExampleLength:
+  Max: 20

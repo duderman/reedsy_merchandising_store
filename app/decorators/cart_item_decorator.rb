@@ -8,6 +8,10 @@ class CartItemDecorator < ApplicationDecorator
     @quantity = quantity
   end
 
+  def total_with_discount
+    total - Discounts.discount_value_for(self)
+  end
+
   def total
     price * quantity
   end

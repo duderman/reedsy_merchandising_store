@@ -8,7 +8,7 @@ class CartTotalCalculatorService < ApplicationService
   end
 
   def call
-    items.sum(&:total).to_d
+    items.sum(&:total_with_discount).to_d
   end
 
   private

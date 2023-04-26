@@ -63,6 +63,24 @@ RSpec.describe 'Store' do
     it { is_expected.to be_successful }
     its(:body) { is_expected.to eq({ total: 6.0.to_d }.to_json) }
 
+    # Taken from the task examples
+    it 'applies discounts' do
+      get '/store/total', params: { cart: { items: { mug.code => 1, tshirt.code => 1, hoodie.code => 1 } } }
+      expect(response.body).to eq({ total: 41.to_d }.to_json)
+
+      get '/store/total', params: { cart: { items: { mug.code => 9, tshirt.code => 1 } } }
+      expect(response.body).to eq({ total: 69.to_d }.to_json)
+
+      get '/store/total', params: { cart: { items: { mug.code => 10, tshirt.code => 1 } } }
+      expect(response.body).to eq({ total: 73.8.to_d }.to_json)
+
+      get '/store/total', params: { cart: { items: { mug.code => 45, tshirt.code => 3 } } }
+      expect(response.body).to eq({ total: 279.9.to_d }.to_json)
+
+      get '/store/total', params: { cart: { items: { mug.code => 200, tshirt.code => 4, hoodie.code => 1 } } }
+      expect(response.body).to eq({ total: 902.to_d }.to_json)
+    end
+
     context 'with unknown codes' do
       let(:cart_params) { { items: { 'UNKNOWN' => 1 } } }
 
