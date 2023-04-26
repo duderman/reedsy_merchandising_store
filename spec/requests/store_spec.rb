@@ -51,23 +51,16 @@ RSpec.describe 'Store' do
       let(:mug) { Struct.new(:code).new('MISSING') }
 
       it { is_expected.to have_http_status(:not_found) }
+      its(:body) { is_expected.to eq({ error: 'not_found' }.to_json) }
     end
   end
 
   describe 'GET /store/total' do
-    let(:cart_params) { { items: { mug.code => 1 } } }
-
-    before do
-      get '/store/total', params: { cart: cart_params }
-    end
-
-    it { is_expected.to be_successful }
-    its(:body) { is_expected.to eq({ total: 6.0.to_d }.to_json) }
-
     # Taken from the task examples
-    it 'applies discounts' do
+    it 'responds with total with discounts' do
       get '/store/total', params: { cart: { items: { mug.code => 1, tshirt.code => 1, hoodie.code => 1 } } }
       expect(response.body).to eq({ total: 41.to_d }.to_json)
+      expect(response).to be_successful
 
       get '/store/total', params: { cart: { items: { mug.code => 9, tshirt.code => 1 } } }
       expect(response.body).to eq({ total: 69.to_d }.to_json)
@@ -83,7 +76,7 @@ RSpec.describe 'Store' do
     end
 
     context 'with unknown codes' do
-      let(:cart_params) { { items: { 'UNKNOWN' => 1 } } }
+      before { get '/store/total', params: { cart: { items: { 'UNKNOWN' => 1 } } } }
 
       it { is_expected.to be_successful }
       its(:body) { is_expected.to eq({ total: 0.0.to_d }.to_json) }
@@ -95,7 +88,7 @@ RSpec.describe 'Store' do
         allow(CartTotalCalculatorService).to receive(:new).and_return(calculator)
         allow(calculator).to receive(:call)
           .and_raise(CartTotalCalculatorService::UnknownItemError, 'Unknown item code: UNKNOWN')
-        get '/store/total', params: { cart: cart_params }
+        get '/store/total', params: { cart: { items: { 'MUG' => 1 } } }
       end
 
       it { is_expected.to have_http_status(:unprocessable_entity) }

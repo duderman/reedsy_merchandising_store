@@ -14,8 +14,8 @@ class StoreController < ApplicationController
   end
 
   def total
-    total = CartTotalCalculatorService.new(cart_items)
-    render json: { total: total.call }
+    calculator = CartTotalCalculatorService.new(cart_items)
+    render json: { total: calculator.call }
   rescue CartTotalCalculatorService::UnknownItemError => e
     render json: { error: e.message }, status: :unprocessable_entity
   end
