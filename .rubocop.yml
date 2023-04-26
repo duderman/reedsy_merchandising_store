@@ -13,3 +13,6 @@ Style/Documentation:
 
 RSpec/MultipleExpectations:
   Max: 5
+
+Lint/MissingSuper:
+  Enabled: false

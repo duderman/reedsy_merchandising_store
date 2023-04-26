@@ -2,7 +2,7 @@
 
 RSpec.describe StoreItemSerializer do
   let(:serializer) { described_class.new(store_item) }
-  let(:store_item) { build(:store_item) }
+  let(:store_item) { build(:store_item, :mug) }
 
   describe '#serializable_hash' do
     subject { serializer.serializable_hash }

@@ -13,6 +13,13 @@ class StoreController < ApplicationController
     end
   end
 
+  def total
+    total = CartTotalCalculatorService.new(cart_items)
+    render json: { total: total.call }
+  rescue CartTotalCalculatorService::UnknownItemError => e
+    render json: { error: e.message }, status: :unprocessable_entity
+  end
+
   private
 
   def store_item
@@ -21,5 +28,9 @@ class StoreController < ApplicationController
 
   def store_item_params
     params.require(:store_item).permit(:name, :price)
+  end
+
+  def cart_items
+    params.require(:cart).permit(items: StoreItem.codes).to_h.fetch(:items, {})
   end
 end

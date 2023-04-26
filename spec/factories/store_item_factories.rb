@@ -2,9 +2,11 @@
 
 FactoryBot.define do
   factory :store_item do
-    code { 'MUG' }
-    name { 'Reedsy Mug' }
-    price { 6.0 }
+    trait :mug do
+      code { 'MUG' }
+      name { 'Reedsy Mug' }
+      price { 6.0 }
+    end
 
     trait :tshirt do
       code { 'TSHIRT' }

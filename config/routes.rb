@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  resources :store, only: %i[index update], param: :code
+  resources :store, only: %i[index update], param: :code do
+    get :total, on: :collection
+  end
 
   root 'store#index'
 end
