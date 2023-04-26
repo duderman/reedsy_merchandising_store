@@ -6,6 +6,7 @@ AllCops:
   NewCops: enable
   Exclude:
     - bin/**/*
+    - db/schema.rb
 
 Style/Documentation:
   Enabled: false
