@@ -16,21 +16,22 @@ RSpec.describe 'Store' do
     it { is_expected.to be_successful }
 
     its(:body) do
-      is_expected.to eq([
+      is_expected.to eq({ store_items: [
         { code: 'MUG', name: 'Reedsy Mug', price: '6.0' },
         { code: 'TSHIRT', name: 'Reedsy T-Shirt', price: '15.0' },
         { code: 'HOODIE', name: 'Reedsy Hoodie', price: '20.0' }
-      ].to_json)
+      ] }.to_json)
     end
   end
 
   describe 'PATCH /store/:code' do
     let(:params) { { store_item: store_item_params } }
-    let(:store_item_params) { { name: 'New name', price: 10.0 } }
+    let(:store_item_params) { { name: 'New name', price: '10.0' } }
 
     before { patch "/store/#{mug.code}", params: }
 
     it { is_expected.to be_successful }
+    its(:body) { is_expected.to eq({ store_item: { code: mug.code }.merge(store_item_params) }.to_json) }
 
     it 'updates the store item' do
       mug.reload
